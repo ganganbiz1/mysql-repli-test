@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  db1:
+    image: mysql:5.7
+    tty: true
+    container_name: mysql_container_master
+    environment:
+      MYSQL_ROOT_PASSWORD: 4444wwww
+      MYSQL_DATABASE: masterdb1
+      MYSQL_USER: replidb1user1
+      MYSQL_PASSWORD: 4444wwww
+      TZ: Asia/Tokyo
+    restart: always
+    ports:
+      - 3307:3306
+    networks:
+      - app-net
+    volumes:
+      - data-volume1:/var/lib/mysql1
+  db2:
+    image: mysql:5.7
+    tty: true
+    container_name: mysql_container_slave
+    environment:
+      MYSQL_ROOT_PASSWORD: 4444wwww
+      MYSQL_DATABASE: replidb1
+      MYSQL_USER: replidb1user1
+      MYSQL_PASSWORD: 4444wwww
+      TZ: Asia/Tokyo
+    restart: always
+    ports:
+      - 3308:3306
+    networks:
+      - app-net
+    volumes:
+      - data-volume2:/var/lib/mysql2
+volumes:
+  data-volume1:
+  data-volume2:
+networks:
+  app-net:
+    driver: bridge
